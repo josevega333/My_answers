@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Test Suite</title>
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.19.3.css">
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="https://code.jquery.com/qunit/qunit-2.19.3.js"></script>
+  <script>
+my_strings = ["()((()()))","()()()()()"];
+my_strings_false = ["((()))()()(())(()"];
+
+function validParentheses(argument)
+{
+  if(argument == "()")
+    {
+      result = true;
+    }
+  else
+    {
+      //if it has not sense(the string has odd length or is )( ) then return false, otherwise we analyze more 
+      var search = argument.lastIndexOf("(");
+      var lefts_parentheses = argument.matchAll(/\(/g);
+      var rights_parentheses = argument.matchAll(/\)/g);
+
+      var lefts = [];
+      var rights = [];
+
+      for(const match of lefts)
+        {
+          lefts.push(match);
+        }
+      
+      for(const match of rights)
+        {
+          rights.push(match);
+        }
+      
+      if((argument.length % 2 != 0) || lefts.length != rights.length || argument == ")(" )
+        {
+          result = false;
+        }//basically, we delete the deeper ordered parentheses
+      else if(argument.charAt(search + 1) == ")")
+        {
+          var left = argument.substring(0,search);
+          var right = argument.substring(search+2);
+          var my_string_new = left.concat(right);
+          validParentheses(my_string_new);
+        }
+    }
+  return result;
+}
+
+//test for well-ordered strings
+  QUnit.test.each("validParentheses_check",my_strings,(assert, data) => {
+    assert.true(validParentheses(data), `${data} is valid`);
+});
+//test for bad-ordered strings
+  QUnit.test.each("validParentheses_check",my_strings_false,(assert, data) => {
+    assert.false(validParentheses(data), `${data} is valid`);
+});
+</script>
+</body>
