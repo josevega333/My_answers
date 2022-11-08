@@ -27,4 +27,4 @@ class Movie:
 #we create an object and we pass the values for the parameters
 my_obj = Movie(500,15,0.9)
 #we show the result
-my_obj.movie()
+print(my_obj.movie())
